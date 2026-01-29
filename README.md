@@ -1,8 +1,14 @@
 # MUSIC-initial-conditions-generator - Beginner's Guide
 It is my first experience in using MUSIC code to generate initial condition for cosmological simulations.
 
-[![MUSIC](https://www-n.oca.eu/ohahn/MUSIC/music_logo.png)](https://www-n.oca.eu/ohahn/MUSIC/)
+<div align="center">
 
+[<img src="https://www-n.oca.eu/ohahn/MUSIC/music_logo.png" 
+      alt="MUSIC" 
+      width="350">](https://www-n.oca.eu/ohahn/MUSIC/)
+
+</div>
+      
 > **Note**: This repository documents my first experience using the MUSIC code for cosmological simulations. 
 > As a beginner, I'm sharing my learning journey to help others navigate the setup and configuration process.
 
@@ -45,3 +51,81 @@ The output file was created inside build directory: 'debug.hdf5'
 - [MUSIC Website](https://www-n.oca.eu/ohahn/MUSIC/)
 - [User's Guide PDF](https://bitbucket.org/ohahn/music/downloads/MUSIC_Users_Guide.pdf)
 - [Original Paper](http://arxiv.org/abs/1103.6031)
+
+## Analyzing HDF5 Output with Python
+import h5py
+import numpy as np
+import matplotlib.pyplot as plt
+
+def analyze_output(filename):
+    """Analyze MUSIC output file"""
+    
+    with h5py.File(filename, 'r') as f:
+        print("File structure:")
+        def print_structure(name, obj):
+            if isinstance(obj, h5py.Dataset):
+                print(f"  Dataset: {name}, Shape: {obj.shape}, Dtype: {obj.dtype}")
+            elif isinstance(obj, h5py.Group):
+                print(f"  Group: {name}")
+        
+        f.visititems(print_structure)
+        
+        # Read particle data if available
+        if 'PartType1' in f:
+            particles = f['PartType1']
+            print("\nParticle data:")
+            for key in particles.keys():
+                data = particles[key][:]
+                print(f"  {key}: shape={data.shape}")
+                
+                if key == 'Coordinates':
+                    print(f"    Range: [{data.min():.3f}, {data.max():.3f}]")
+        
+        # Read header information
+        if 'Header' in f:
+            header = f['Header'].attrs
+            print("\nCosmological parameters:")
+            for key in header:
+                print(f"  {key}: {header[key]}")
+
+## Visualization Script
+```python
+def visualize_particles(filename, n_samples=10000):
+    """Visualize particle distribution"""
+    
+    with h5py.File(filename, 'r') as f:
+        if 'PartType1' in f:
+            coords = f['PartType1']['Coordinates'][:]
+            
+            # Sample for faster visualization
+            if len(coords) > n_samples:
+                indices = np.random.choice(len(coords), n_samples, replace=False)
+                coords = coords[indices]
+            
+            # Create 3D visualization
+            fig = plt.figure(figsize=(12, 8))
+            
+            # 3D plot
+            ax1 = fig.add_subplot(221, projection='3d')
+            ax1.scatter(coords[:,0], coords[:,1], coords[:,2], 
+                       s=1, alpha=0.5)
+            ax1.set_xlabel('X')
+            ax1.set_ylabel('Y')
+            ax1.set_zlabel('Z')
+            ax1.set_title('3D Particle Distribution')
+            
+            # 2D projections
+            projections = [('XY', 0, 1), ('XZ', 0, 2), ('YZ', 1, 2)]
+            for i, (title, x_idx, y_idx) in enumerate(projections, 2):
+                ax = fig.add_subplot(2, 2, i)
+                ax.scatter(coords[:,x_idx], coords[:,y_idx], 
+                          s=1, alpha=0.5)
+                ax.set_xlabel(['X', 'X', 'Y'][i-2])
+                ax.set_ylabel(['Y', 'Z', 'Z'][i-2])
+                ax.set_title(f'{title} Projection')
+                ax.grid(True, alpha=0.3)
+            
+            plt.tight_layout()
+            plt.savefig('particle_visualization.png', dpi=150)
+            plt.show()
+```
