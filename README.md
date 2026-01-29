@@ -19,13 +19,25 @@ I cloned the source code using
 git clone https://bitbucket.org/ohahn/music.git
 ```
 
-Then go to the directory
+## Building MUSIC
 
-```bash
+I created a build directory,  as follows; inside the music directory, 
+```bash 
 cd music
-```
-and greate a new folder
-
-```bash
 mkdir build
 ```
+When I just create a new folder, then I configured the code using CMake
+```bash
+cd build
+cmake ..
+make
+```
+
+## Running
+There is an example parameter file 'ics_example.conf' in the main directory. I just run it as a simple argument, e.g. from within the build directory:
+```bash
+./MUSIC ../ics_example.conf
+```
+## Output
+The output file was created inside build directory: 'debug.hdf5'
+
