@@ -41,3 +41,7 @@ There is an example parameter file 'ics_example.conf' in the main directory. I j
 ## Output
 The output file was created inside build directory: 'debug.hdf5'
 
+## References
+- [MUSIC Website](https://www-n.oca.eu/ohahn/MUSIC/)
+- [User's Guide PDF](https://bitbucket.org/ohahn/music/downloads/MUSIC_Users_Guide.pdf)
+- [Original Paper](http://arxiv.org/abs/1103.6031)
