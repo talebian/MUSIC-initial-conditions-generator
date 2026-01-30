@@ -53,6 +53,9 @@ The output file was created inside build directory: 'debug.hdf5'
 - [Original Paper](http://arxiv.org/abs/1103.6031)
 
 ## Analyzing HDF5 Output with Python
+
+```python
+
 import h5py
 import numpy as np
 import matplotlib.pyplot as plt
@@ -87,6 +90,7 @@ def analyze_output(filename):
             print("\nCosmological parameters:")
             for key in header:
                 print(f"  {key}: {header[key]}")
+```
 
 ## Visualization Script
 ```python
