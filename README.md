@@ -44,6 +44,43 @@ There is an example parameter file 'ics_example.conf' in the main directory. I j
 ```bash
 ./MUSIC ../ics_example.conf
 ```
+The result would be something like this:
+
+```bash
+
+    __    __     __  __     ______     __     ______      
+   /\ "-./  \   /\ \/\ \   /\  ___\   /\ \   /\  ___\  
+   \ \ \-./\ \  \ \ \_\ \  \ \___  \  \ \ \  \ \ \____ 
+    \ \_\ \ \_\  \ \_____\  \/\_____\  \ \_\  \ \_____\ 
+     \/_/  \/_/   \/_____/   \/_____/   \/_/   \/_____/ 
+
+                            this is music! version 1.53
+
+ - Version built from git rev.: N/A, tag: N/A, branch: N/A
+ - Version was compiled for double precision.
+
+
+ - Opening log file '../ics_axel.conf_log.txt'.
+ - Using k-space sampled transfer functions...
+ - Selecting transfer function plug-in 'eisenstein'...
+ - starting at a=0.0196078
+ - Selecting region generator plug-in 'box'...
+terminate called after throwing an instance of 'config_file::ErrItemNotFound'
+  what():  'output/format' not found.
+Aborted (core dumped)
+```
+So you need to change 'ics_example.conf' by
+```bash
+vim ../ics_axel.conf
+
+[output]
+##generic MUSIC data format (used for testing)
+##requires HDF5 installation and HDF5 enabled in Makefile
+format                  = generic
+filename                = debug.hdf5
+```
+to define the output configuration and output file!
+
 ## Output
 The output file was created inside build directory: 'debug.hdf5'
 
