@@ -10,7 +10,7 @@ It is my first experience in using MUSIC code to generate initial condition for 
 </div>
       
 > **Note**: This repository documents my first experience using the MUSIC code for cosmological simulations. 
-> As a beginner, I'm sharing my learning journey to help others navigate the setup and configuration process.
+> As a beginner, I'm sharing my learning journey to help others navigate the setup and configuration process. you also can find a full user's guide on the original [MUSIC Website](https://www-n.oca.eu/ohahn/MUSIC/).
 
 ## Why I Created This Guide
 When I first started using MUSIC, I found the learning curve quite steep. This repository aims to create a reference for my future work and for other beginners.
